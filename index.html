@@ -106,11 +106,80 @@
 
           $("#currentDay").text(currentDate);
 
-        //
+        //logic that highlights the hour grey,red or green depending if it's past,present or future
+        var currentTime = m.format("LT")
+        // console.log(moment("9:00 AM").isBefore(currentTime));
+        
+ 
 
-          //click event to save text to local storage
 
-          //
+            //click event to save text to local storage
+          var todos = []
+          var todoInput = $(".form-control");
+          var saveButton = $(".btn");
+
+
+
+          init();
+
+
+          function init() {
+            // Get stored todos from localStorage
+            // Parsing the JSON string to an object
+            var storedTodos = JSON.parse(localStorage.getItem("todos"));
+
+            // If todos were retrieved from localStorage, update the todos array to it
+            if (storedTodos !== null) {
+              todos = storedTodos;
+            }
+            console.log(JSON.stringify(storeTodos));
+
+          }
+
+              function renderTodos() {
+              // Clear todoList element
+              todos.innerHTML = "";
+            
+
+            
+              for (var i = 0; i < todos.length; i++) {
+                var todo = todos[i];
+
+               todoInput.textContent = todo;
+            
+
+              }
+            }
+
+            renderTodos()
+
+
+            function storeTodos() {
+              // Stringify and set "todos" key in localStorage to todos array
+              localStorage.setItem("todos", JSON.stringify(todos));
+            }
+
+            // When form is submitted...
+            saveButton.on("click", function(event) {
+              event.preventDefault();
+              console.log(todos);
+
+              var todoText = todoInput.val();
+
+              // Return from function early if submitted todoText is blank
+              if (todoText === "") {
+                return;
+              }
+
+              // Add new todoText to todos array, clear the input
+              todos.push(todoText);
+              todoInput.value = "";
+
+              // Store updated todos in localStorage, re-render the list
+              storeTodos();
+              renderTodos()
+            });              
+          
 
         })
 
